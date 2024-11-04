@@ -1,4 +1,4 @@
-const Product = require('../models/products.model');
+const fetchProduct = require('../utils/fetchProduct');
 
 // CREATE
 const createProduct = async (req, res) => {
@@ -6,7 +6,7 @@ const createProduct = async (req, res) => {
 
     try{
         const data = req.body;
-        let answer = await new Product(data).save();
+        let answer = await fetchProduct.postProduct(data);
         res.status(201).json(answer);
 
     }catch (error) {
@@ -19,7 +19,7 @@ const createProduct = async (req, res) => {
 const getProduct = async (req, res) => {
         try {
             const id = req.params.id;
-            let products = id? await Product.find({id},'-_id -__v') : await Product.find({},'-_id -__v'); //{}
+            let products = await fetchProduct.getProduct(id); //{}
             res.status(200).json(products); // Respuesta de la API para 1 producto
         }
         catch (error) {
